@@ -1,3 +1,7 @@
 ﻿body {
-    background: url("export-map-share.png")blue;
+    background-image: url("export-map-share.png");
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat
 }
