@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ex3.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,15 @@ namespace Ex3.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult display(string ip, string port)
+        {
+            HomeModel.Instance.Ip = ip;
+            HomeModel.Instance.Port = port;
+            HomeModel.Instance.Connect();
             return View();
         }
     }
