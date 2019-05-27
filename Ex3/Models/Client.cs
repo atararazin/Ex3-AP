@@ -42,12 +42,16 @@ namespace Ex3.Models
 
             networkStream = server.GetStream();
             Debug.WriteLine("reading from the server...");
-            int recv = networkStream.Read(data, 0, data.Length);
-            stringData = Encoding.ASCII.GetString(data, 0, recv);
-            Debug.WriteLine(stringData);
-            string[] values = stringData.Split(',');
-            double lon = Convert.ToDouble(values[0]);
-            double lat = Convert.ToDouble(values[1]);
+            byte[] dataLonStr = Encoding.ASCII.GetBytes("get /position/longitude-deg\r\n");
+            networkStream.Write(dataLonStr, 0, dataLonStr.Length);
+            double lon = networkStream.Read(data, 0, data.Length);
+            Debug.WriteLine("lon is", lon);
+            //return value from the Flight Gear: "/ position / longitude - deg = '-157.9431848'(double)";
+
+            byte[] dataLatStr = Encoding.ASCII.GetBytes("get /position/latitude-deg\r\n");
+            networkStream.Write(dataLatStr, 0, dataLatStr.Length);
+            double lat = networkStream.Read(data, 0, data.Length);
+
             return new Location(lon, lat);
         }
 

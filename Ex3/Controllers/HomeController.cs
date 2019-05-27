@@ -1,7 +1,9 @@
 ﻿using Ex3.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,7 +22,7 @@ namespace Ex3.Controllers
         {
             HomeModel.Instance.Ip = ip;
             HomeModel.Instance.Port = port;
-            //HomeModel.Instance.Connect(); remove this comment
+            HomeModel.Instance.Connect(); 
             return View();
         }
     }
