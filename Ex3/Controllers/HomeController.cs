@@ -20,7 +20,7 @@ namespace Ex3.Controllers
         {
             HomeModel.Instance.Ip = ip;
             HomeModel.Instance.Port = port;
-            HomeModel.Instance.Connect();
+            //HomeModel.Instance.Connect(); remove this comment
             return View();
         }
     }
