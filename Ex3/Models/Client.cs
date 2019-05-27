@@ -6,13 +6,22 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Web;
+using System.Text.RegularExpressions;
 
 namespace Ex3.Models
 {
     public static class Client
     {
-        public static TcpClient server;
+        private static  readonly Regex regex;
+        public static TcpClient client;
         public static NetworkStream networkStream;
+
+        // Initial the regex pattern
+        static Client()
+        {
+            regex = new Regex(@"=\s+'(.+)'");
+        }
+
 
         public static void Connect(string ip, string p)
         {
@@ -20,7 +29,7 @@ namespace Ex3.Models
 
             try
             {
-                server = new TcpClient(ip, port);
+                client = new TcpClient(ip, port);
             }
             catch (SocketException)
             {
@@ -32,27 +41,53 @@ namespace Ex3.Models
         {
             Console.WriteLine("Disconnecting from server...");
             networkStream.Close();
-            server.Close();
+            client.Close();
         }
 
         public static Location ReadFromServer()
         {
-            byte[] data = new byte[1024];
-            string stringData;
 
-            networkStream = server.GetStream();
+            byte[] data = new byte[1024];
+
+            networkStream = client.GetStream();
             Debug.WriteLine("reading from the server...");
             byte[] dataLonStr = Encoding.ASCII.GetBytes("get /position/longitude-deg\r\n");
             networkStream.Write(dataLonStr, 0, dataLonStr.Length);
-            double lon = networkStream.Read(data, 0, data.Length);
-            Debug.WriteLine("lon is", lon);
-            //return value from the Flight Gear: "/ position / longitude - deg = '-157.9431848'(double)";
+
+            // Read the result and parse
+            networkStream.Read(data, 0, data.Length);
+            string raw = Encoding.ASCII.GetString(data);
+            double lon = ParseSimulatorResponse(raw);
+
+
 
             byte[] dataLatStr = Encoding.ASCII.GetBytes("get /position/latitude-deg\r\n");
             networkStream.Write(dataLatStr, 0, dataLatStr.Length);
-            double lat = networkStream.Read(data, 0, data.Length);
+
+            networkStream.Read(data, 0, data.Length);
+            raw = Encoding.ASCII.GetString(data);
+            double lat = ParseSimulatorResponse(raw);
+
 
             return new Location(lon, lat);
+        }
+
+        private static double ParseSimulatorResponse(string raw)
+        {
+            var match = regex.Match(raw);
+            double res = 0;
+            if (match.Success)
+            {
+                try
+                {
+                    res = Convert.ToDouble(match.Groups[1].Value);
+                }
+                catch
+                {
+                    res = 0;
+                }
+            }
+            return res;
         }
 
     }
