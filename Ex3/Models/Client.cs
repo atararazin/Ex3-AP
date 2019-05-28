@@ -56,7 +56,6 @@ namespace Ex3.Models
             networkStream.Read(data, 0, data.Length);
             string raw = Encoding.ASCII.GetString(data);
             double result = ParseSimulatorResponse(raw);
-
             return result;
         }
 

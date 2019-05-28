@@ -25,26 +25,33 @@ namespace Ex3.Models
             }
         }
 
+        public void Connect(string ip, string port)
+        {
+            Client.Connect(ip, port);
+            Debug.WriteLine("connected to client");
+        }
+
         public void SaveToFile(string fileName)
         {
             Debug.WriteLine("writing to file");
             string fileWEtx = fileName + ".txt";
-            FileStream fs = File.Create(fileWEtx);
+            //FileStream fs = File.Create(fileWEtx);
 
             double result;
             byte[] writeStr;
             foreach(string str in argsForSimulator)
             {
                 writeStr = Encoding.ASCII.GetBytes(str + ":\t");
-                fs.Write(writeStr, 0, str.Length);
+                //fs.Write(writeStr, 0, str.Length);
                 result = Client.ReadFromServer(str);
+                Debug.WriteLine(str, ":", result);
                 writeStr = Encoding.ASCII.GetBytes(result.ToString());
-                fs.Write(writeStr, 0, writeStr.Length);
+                //fs.Write(writeStr, 0, writeStr.Length);
             }
 
             Byte[] data = Encoding.ASCII.GetBytes("hello");
-            fs.Write(data, 0, data.Length);
-            fs.Close();
+            //fs.Write(data, 0, data.Length);
+            //fs.Close();
 
             // Open the stream and read it back.    
             StreamReader sr = File.OpenText(fileWEtx);
