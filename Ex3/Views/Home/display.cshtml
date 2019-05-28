@@ -3,8 +3,43 @@
     ViewBag.Title = "display";
 }
 <h2>display</h2>
-<body onload="draw();">
+<div>
     <canvas id="displayCanvas"></canvas>
-    <script src="/Scripts/DrawLocation.js"> 
-    </script>
-</body>
+</div>
+
+<script>
+
+    var IntervalTime = 1 * 1000
+    myTimer = (function () {
+        $.post( "@Url.Action("GetLocation")").done(function (xml) {
+                var xmlDoc = $.parseXML( xml ),
+                $xml = $( xmlDoc ),
+                lon = $xml.find( "lon" ).text();
+                lat = $xml.find( "lat" ).text();
+                // Draw Circle
+                var height = window.innerHeight;
+                var width = window.innerWidth;
+                var canvas = document.getElementById('displayCanvas');
+                var context = canvas.getContext('2d');
+                var xCoord = parseFloat(lon) + 300;
+                var yCoord = parseFloat(lat) + 100;
+
+                //draw the outer circle
+                var pointSize = 4;
+                context.fillStyle = "000000"//black
+                context.beginPath(); //Start path
+                context.arc(xCoord, yCoord, pointSize, 0, Math.PI * 2, true); // Draw a point using the arc function of the canvas with a point structure.
+                context.fill();
+
+                //draw the inner circle
+                context.fillStyle = "#ff2626"; //red color
+                pointSize = 3;
+                context.beginPath(); //Start path
+                context.arc(xCoord, yCoord, pointSize, 0, Math.PI * 2, true); // Draw a point using the arc function of the canvas with a point structure.
+                context.fill();
+
+        });
+    });
+    //setInterval(myTimer, IntervalTime);
+    myTimer();
+</script>
