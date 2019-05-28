@@ -28,7 +28,10 @@ namespace Ex3.Models
         public void Connect()
         {
             Client.Connect(Ip, Port);
-            this.location = Client.ReadFromServer();
+            double lat = Client.ReadFromServer("lat");
+            double lon = Client.ReadFromServer("lon");
+            this.location = new Location(lon, lat);
+            Debug.WriteLine("lon =", this.location.Lon, "lat =", this.location.Lat);
         }
 
         public Location GetLocation()

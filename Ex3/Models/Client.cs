@@ -44,32 +44,20 @@ namespace Ex3.Models
             client.Close();
         }
 
-        public static Location ReadFromServer()
+        public static double ReadFromServer(string arg)
         {
-
-            byte[] data = new byte[1024];
-
             networkStream = client.GetStream();
             Debug.WriteLine("reading from the server...");
-            byte[] dataLonStr = Encoding.ASCII.GetBytes("get /position/longitude-deg\r\n");
-            networkStream.Write(dataLonStr, 0, dataLonStr.Length);
+            byte[] data;
+            data = Encoding.ASCII.GetBytes(SimulatorRequests.map[arg]);
+            networkStream.Write(data, 0, data.Length);
 
             // Read the result and parse
             networkStream.Read(data, 0, data.Length);
             string raw = Encoding.ASCII.GetString(data);
-            double lon = ParseSimulatorResponse(raw);
-
-
-
-            byte[] dataLatStr = Encoding.ASCII.GetBytes("get /position/latitude-deg\r\n");
-            networkStream.Write(dataLatStr, 0, dataLatStr.Length);
-
-            networkStream.Read(data, 0, data.Length);
-            raw = Encoding.ASCII.GetString(data);
-            double lat = ParseSimulatorResponse(raw);
-
-
-            return new Location(lon, lat);
+            double result = ParseSimulatorResponse(raw);
+            
+            return result;
         }
 
         private static double ParseSimulatorResponse(string raw)

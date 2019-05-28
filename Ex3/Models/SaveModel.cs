@@ -26,6 +26,10 @@ namespace Ex3.Models
         public void SaveToFile(string fileName)
         {
             Debug.WriteLine("writing to file");
+            Byte[] getLonCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["lon"]);
+            Byte[] getLatCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["lat"]);
+            Byte[] getThrottleCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["throttle"]);
+            Byte[] getRudderCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["rudder"]);
 
             Byte[] data = Encoding.ASCII.GetBytes("hello");
             string fileWEtx = fileName + ".txt";
