@@ -31,5 +31,10 @@ namespace Ex3.Models
             this.location = Client.ReadFromServer();
         }
 
+        public Location GetLocation()
+        {
+            return this.location;
+        }
+
     }
 }

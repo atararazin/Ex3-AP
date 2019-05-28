@@ -1,9 +1,11 @@
 ﻿function draw() {
+
+
     //use these to neutralize the values from lot and lat
     var height = window.innerHeight;
     var width = window.innerWidth;
     var canvas = document.getElementById('displayCanvas');
-        var context = canvas.getContext('2d');
+    var context = canvas.getContext('2d');
 
     var xCoord = 30;
     var yCoord = 70;
