@@ -28,6 +28,18 @@ namespace Ex3.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult save(string ip, string port, int timesPerSec, int numOfSec, string fileName)
+        {
+            HomeModel.Instance.Ip = ip;
+            HomeModel.Instance.Port = port;
+            //HomeModel.Instance.Connect();delete this comment
+            //deal with viewing the map number of seconds
+            SaveModel.Instance.SaveToFile(fileName);
+
+            return View();
+        }
+
         [HttpPost]
         public string GetLocation()
         {
