@@ -31,7 +31,7 @@ namespace Ex3.Models
             double lat = Client.ReadFromServer("lat");
             double lon = Client.ReadFromServer("lon");
             this.location = new Location(lon, lat);
-            Debug.WriteLine("lon =", this.location.Lon, "lat =", this.location.Lat);
+            //Debug.WriteLine("lon =", this.location.Lon, "lat =", this.location.Lat);
         }
 
         public Location GetLocation()
