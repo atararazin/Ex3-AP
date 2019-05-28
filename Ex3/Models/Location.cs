@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Xml;
 
 namespace Ex3.Models
 {
@@ -25,6 +26,12 @@ namespace Ex3.Models
 
         }
 
-
+        public void ToXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("Location");
+            writer.WriteElementString("lon", this._lon.ToString());
+            writer.WriteElementString("lat", this._lat.ToString());
+            writer.WriteEndElement();
+        }
     }
 }
