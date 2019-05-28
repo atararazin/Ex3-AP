@@ -47,16 +47,15 @@ namespace Ex3.Models
         public static double ReadFromServer(string arg)
         {
             networkStream = client.GetStream();
-            Debug.WriteLine("reading from the server...");
             byte[] data;
             data = Encoding.ASCII.GetBytes(SimulatorRequests.map[arg]);
             networkStream.Write(data, 0, data.Length);
-
+           
             // Read the result and parse
             networkStream.Read(data, 0, data.Length);
-            string raw = Encoding.ASCII.GetString(data);
+            string raw = Encoding.UTF8.GetString(data);
+            Debug.WriteLine(raw);
             double result = ParseSimulatorResponse(raw);
-            
             return result;
         }
 

@@ -10,6 +10,7 @@ namespace Ex3.Models
 {
     public class SaveModel
     {
+        private List<string> argsForSimulator = new List<string>(){"lon", "lat", "throttle", "rudder"};
         private static SaveModel s_instace = null;
         public static SaveModel Instance
         {
@@ -20,20 +21,28 @@ namespace Ex3.Models
                     s_instace = new SaveModel();
                 }
                 return s_instace;
+
             }
         }
 
         public void SaveToFile(string fileName)
         {
             Debug.WriteLine("writing to file");
-            Byte[] getLonCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["lon"]);
-            Byte[] getLatCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["lat"]);
-            Byte[] getThrottleCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["throttle"]);
-            Byte[] getRudderCommand = Encoding.ASCII.GetBytes(SimulatorRequests.map["rudder"]);
-
-            Byte[] data = Encoding.ASCII.GetBytes("hello");
             string fileWEtx = fileName + ".txt";
             FileStream fs = File.Create(fileWEtx);
+
+            double result;
+            byte[] writeStr;
+            foreach(string str in argsForSimulator)
+            {
+                writeStr = Encoding.ASCII.GetBytes(str + ":\t");
+                fs.Write(writeStr, 0, str.Length);
+                result = Client.ReadFromServer(str);
+                writeStr = Encoding.ASCII.GetBytes(result.ToString());
+                fs.Write(writeStr, 0, writeStr.Length);
+            }
+
+            Byte[] data = Encoding.ASCII.GetBytes("hello");
             fs.Write(data, 0, data.Length);
             fs.Close();
 
@@ -45,7 +54,6 @@ namespace Ex3.Models
                 Debug.WriteLine(s);
             }
             Debug.WriteLine("done writing to file");
-
         }
     }
 }
