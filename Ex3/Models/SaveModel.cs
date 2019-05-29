@@ -33,34 +33,29 @@ namespace Ex3.Models
 
         public void SaveToFile(string fileName)
         {
-            Debug.WriteLine("writing to file");
+            FileStream fs = createFile(fileName);
+            writeToFile(fs);
+            Debug.WriteLine("saved to file");
+        }
+
+        private FileStream createFile(string fileName)
+        {
+            Debug.WriteLine("creating file");
             string fileWEtx = fileName + ".txt";
-            //FileStream fs = File.Create(fileWEtx);
+            return File.Create(fileWEtx);
+        }
 
-            double result;
-            byte[] writeStr;
-            foreach(string str in argsForSimulator)
+        private void writeToFile(FileStream fs)
+        {
+            foreach (string str in argsForSimulator)
             {
-                writeStr = Encoding.ASCII.GetBytes(str + ":\t");
-                //fs.Write(writeStr, 0, str.Length);
-                result = Client.ReadFromServer(str);
-                Debug.WriteLine(str, ":", result);
-                writeStr = Encoding.ASCII.GetBytes(result.ToString());
-                //fs.Write(writeStr, 0, writeStr.Length);
+                byte[] writeFileNameb = Encoding.ASCII.GetBytes(str + ":" + " ");
+                fs.Write(writeFileNameb, 0, writeFileNameb.Length);
+                double result = Client.ReadFromServer(str);
+                byte[] writeFileResb = Encoding.ASCII.GetBytes(result.ToString() + "\r\n");
+                fs.Write(writeFileResb, 0, writeFileResb.Length);
             }
-
-            Byte[] data = Encoding.ASCII.GetBytes("hello");
-            //fs.Write(data, 0, data.Length);
-            //fs.Close();
-
-            // Open the stream and read it back.    
-            StreamReader sr = File.OpenText(fileWEtx);
-            string s = "";
-            while ((s = sr.ReadLine()) != null)
-            {
-                Debug.WriteLine(s);
-            }
-            Debug.WriteLine("done writing to file");
+            fs.Close();
         }
     }
 }

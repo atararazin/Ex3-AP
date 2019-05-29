@@ -9,8 +9,6 @@ namespace Ex3.Models
     public class HomeModel
     {
         private Location location;
-        public string Ip { get; set; }
-        public string Port { get; set; }
 
         private static HomeModel s_instace = null;
         public static HomeModel Instance
@@ -25,9 +23,9 @@ namespace Ex3.Models
             }
         }
 
-        public void Connect()
+        public void Connect(string ip, string port)
         {
-            Client.Connect(Ip, Port);
+            Client.Connect(ip, port);
             double lat = Client.ReadFromServer("lat");
             double lon = Client.ReadFromServer("lon");
             this.location = new Location(lon, lat);
@@ -39,5 +37,9 @@ namespace Ex3.Models
             return this.location;
         }
 
+        public void GetData(string fileName, string numOfSec)
+        {
+
+        }
     }
 }

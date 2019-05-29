@@ -8,6 +8,7 @@ using System.Xml;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
 
 namespace Ex3.Controllers
 {
@@ -20,11 +21,17 @@ namespace Ex3.Controllers
         }
 
         [HttpGet]
-        public ActionResult display(string ip, string port)
+        public ActionResult display(string str1, string str2)
         {
-            HomeModel.Instance.Ip = ip;
-            HomeModel.Instance.Port = port;
-            HomeModel.Instance.Connect();
+            IPAddress address;
+            if (IPAddress.TryParse(str1, out address))
+            {
+                HomeModel.Instance.Connect(str1,str2);
+            }
+            else
+            {
+                HomeModel.Instance.GetData(str1, str2);
+            }
             return View();
         }
 
@@ -32,7 +39,7 @@ namespace Ex3.Controllers
         public ActionResult save(string ip, string port, int timesPerSec, int numOfSec, string fileName)
         {
             SaveModel.Instance.Connect(ip,port);
-            //deal with viewing the map number of seconds
+            //deal with viewing the map for a number of seconds
             SaveModel.Instance.SaveToFile(fileName);
 
             return View();
