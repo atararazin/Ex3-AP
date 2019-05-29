@@ -21,16 +21,16 @@ namespace Ex3.Controllers
         }
 
         [HttpGet]
-        public ActionResult display(string str1, string str2)
+        public ActionResult display(string ip, string port)
         {
             IPAddress address;
-            if (IPAddress.TryParse(str1, out address))
+            if (IPAddress.TryParse(ip, out address))
             {
-                HomeModel.Instance.Connect(str1,str2);
+                HomeModel.Instance.Connect(ip,port);
             }
             else
             {
-                HomeModel.Instance.GetData(str1, str2);
+                DisplayFromFileModel.Instance.Display(ip, port);
             }
             return View();
         }

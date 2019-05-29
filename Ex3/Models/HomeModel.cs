@@ -39,7 +39,7 @@ namespace Ex3.Models
 
         public void GetData(string fileName, string numOfSec)
         {
-
+            
         }
     }
 }
