@@ -40,6 +40,9 @@
 
         });
     });
-    //setInterval(myTimer, IntervalTime);
+
+    var timesPerSec = @Session["times"];
+    if (timesPerSec == "4")
+        setInterval(myTimer, 250);
     myTimer();
 </script>

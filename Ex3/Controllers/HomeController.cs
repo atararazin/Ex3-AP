@@ -20,11 +20,14 @@ namespace Ex3.Controllers
         }
 
         [HttpGet]
-        public ActionResult display(string ip, string port)
+        public ActionResult display(string ip, string port, string timesPerSec = "1")
         {
             HomeModel.Instance.Ip = ip;
             HomeModel.Instance.Port = port;
             HomeModel.Instance.Connect();
+
+            Session["times"] = timesPerSec;
+
             return View();
         }
 
