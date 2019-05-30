@@ -15,6 +15,7 @@ namespace Ex3.Models
         private static  readonly Regex regex;
         public static TcpClient client;
         public static NetworkStream networkStream;
+        private static bool isConnected = false;
 
         // Initial the regex pattern
         static Client()
@@ -29,7 +30,11 @@ namespace Ex3.Models
 
             try
             {
-                client = new TcpClient(ip, port);
+                if (!isConnected)
+                {
+                    client = new TcpClient(ip, port);
+                    isConnected = true;
+                }
             }
             catch (SocketException)
             {
