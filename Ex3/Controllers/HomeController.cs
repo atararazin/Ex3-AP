@@ -29,12 +29,14 @@ namespace Ex3.Controllers
             IPAddress address;
             if (IPAddress.TryParse(ip, out address))
             {
+                Session["isFile"] = 0;
                 HomeModel.Instance.Connect(ip,port);
                 simIp = ip;
                 simPort = port;
             }
             else
             {
+                Session["isFile"] = 1;
                 DisplayFromFileModel.Instance.Display(ip, port);
             }
 
@@ -60,10 +62,17 @@ namespace Ex3.Controllers
         {
             HomeModel.Instance.Connect(simIp, simPort);
             var location = HomeModel.Instance.GetLocation();
-            //Debug.WriteLine(location.Lat);
-            //Debug.WriteLine(location.Lon);
             return ToXml(location);
         }
+
+
+        [HttpPost]
+        public string GetFileData()
+        {
+            var location = HomeModel.Instance.GetLocation();
+            return ToXml(location);
+        }
+
 
         // ToXml fuction from the Tirgul
         private string ToXml(Location location)
