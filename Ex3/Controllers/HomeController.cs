@@ -21,7 +21,7 @@ namespace Ex3.Controllers
         }
 
         [HttpGet]
-        public ActionResult display(string ip, string port)
+        public ActionResult display(string ip, string port, string timesPerSec = "1")
         {
             IPAddress address;
             if (IPAddress.TryParse(ip, out address))
@@ -32,6 +32,8 @@ namespace Ex3.Controllers
             {
                 DisplayFromFileModel.Instance.Display(ip, port);
             }
+
+            Session["times"] = timesPerSec;
             return View();
         }
 

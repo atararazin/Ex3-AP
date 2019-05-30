@@ -4,21 +4,20 @@
 }
 <h2>display</h2>
 <div>
-    <canvas id="displayCanvas"></canvas>
+    <canvas id="displayCanvas" width="1000"height="1000"></canvas>
 </div>
 
 <script>
-
+    var prevX = 0;
+    var prevY = 0;
     var IntervalTime = 1 * 1000
-    myTimer = (function () {
+    drawCircle = (function () {
         $.post( "@Url.Action("GetLocation")").done(function (xml) {
                 var xmlDoc = $.parseXML( xml ),
                 $xml = $( xmlDoc ),
                 lon = $xml.find( "lon" ).text();
                 lat = $xml.find( "lat" ).text();
                 // Draw Circle
-                var height = window.innerHeight;
-                var width = window.innerWidth;
                 var canvas = document.getElementById('displayCanvas');
                 var context = canvas.getContext('2d');
                 var xCoord = parseFloat(lon) + 300;
@@ -40,6 +39,39 @@
 
         });
     });
-    //setInterval(myTimer, IntervalTime);
-    myTimer();
+
+
+    drawLine = (function () {
+        $.post( "@Url.Action("GetLocation")").done(function (xml) {
+                var xmlDoc = $.parseXML( xml ),
+                $xml = $( xmlDoc ),
+                lon = $xml.find( "lon" ).text();
+                lat = $xml.find( "lat" ).text();
+                // Draw Circle
+                var canvas = document.getElementById('displayCanvas');
+                var context = canvas.getContext('2d');
+                context.lineWidth = 10;
+                context.strokeStyle = "#ff2626";
+                var xCoord = parseFloat(lon) + 300;
+                var yCoord = parseFloat(lat) + 100;
+
+                context.beginPath();
+                context.moveTo(prevX, prevY);
+                context.lineTo(prevX + 10, prevY + 10)
+                prevX = prevX + 10;
+                prevY = prevY + 10;
+                context.stroke();
+
+        });
+    });
+
+    //setInterval(drawCircle, IntervalTime);
+    drawCircle();
+    var timesPerSec = @Session["times"];
+    if (timesPerSec == "4")
+        setInterval(drawLine, 250);
+    
+
+    if (timesPerSec == "4")
+        drawLine();
 </script>
