@@ -4,13 +4,22 @@
 }
 <h2>display</h2>
 <div>
-    <canvas id="displayCanvas" width="1000"height="1000"></canvas>
+    <canvas id="displayCanvas"></canvas>
 </div>
 
 <script>
+
+    // Normalization function
+    function convertCord(val, screenSize, cordRange)
+    {
+        return (val + cordRange) * (screenSize / (cordRange * 2))
+    }
+
+    // Initial x, y
     var prevX = 0;
     var prevY = 0;
-    var IntervalTime = 1 * 1000
+
+    // Drawing circle
     drawCircle = (function () {
         $.post( "@Url.Action("GetLocation")").done(function (xml) {
                 var xmlDoc = $.parseXML( xml ),
@@ -18,10 +27,20 @@
                 lon = $xml.find( "lon" ).text();
                 lat = $xml.find( "lat" ).text();
                 // Draw Circle
+                var dimension = [document.documentElement.clientWidth, document.documentElement.clientHeight];
                 var canvas = document.getElementById('displayCanvas');
+                canvas.width = dimension[0];
+                canvas.height = dimension[1];
+
                 var context = canvas.getContext('2d');
-                var xCoord = parseFloat(lon) + 300;
-                var yCoord = parseFloat(lat) + 100;
+                var xCoord = parseFloat(lon);
+                var yCoord = parseFloat(lat);
+
+                //normalize the coordinates to the screen size
+                xCoord = convertCord(xCoord, canvas.width, 180);
+                yCoord = convertCord(yCoord, canvas.height, 90);
+                prevX = xCoord;
+                prevY = yCoord;
 
                 //draw the outer circle
                 var pointSize = 4;
@@ -41,25 +60,42 @@
     });
 
 
+    // Drawing line
     drawLine = (function () {
         $.post( "@Url.Action("GetLocation")").done(function (xml) {
                 var xmlDoc = $.parseXML( xml ),
                 $xml = $( xmlDoc ),
                 lon = $xml.find( "lon" ).text();
                 lat = $xml.find( "lat" ).text();
-                // Draw Circle
+
+                // Draw Line
                 var canvas = document.getElementById('displayCanvas');
                 var context = canvas.getContext('2d');
                 context.lineWidth = 10;
                 context.strokeStyle = "#ff2626";
-                var xCoord = parseFloat(lon) + 300;
-                var yCoord = parseFloat(lat) + 100;
+
+                var xCoord = parseFloat(lon);
+                var yCoord = parseFloat(lat);
+
+                // normalize the coordinates to the screen size
+                xCoord = convertCord(xCoord, canvas.width, 180);
+                yCoord = convertCord(yCoord, canvas.height, 90);
+                xCoord = prevX; //TO DELETE
+                yCoord = prevY; // TO DELETE
+
 
                 context.beginPath();
                 context.moveTo(prevX, prevY);
-                context.lineTo(prevX + 10, prevY + 10)
-                prevX = prevX + 10;
-                prevY = prevY + 10;
+                diffX = (xCoord - prevX) * 10;
+                diffY = (yCoord - prevY) * 10;
+
+                //context.lineTo(prevX + diffX, prevY + diffY);
+                //prevX = prevX + diffX;
+                //prevY = prevY + diffY;
+                context.lineTo(xCoord + 10, yCoord + 10); // DELETE + 10
+                prevX = xCoord + 10; // DELETE  + 10
+                prevY = yCoord + 10; // DELETE + 10
+
                 context.stroke();
 
         });
@@ -67,11 +103,11 @@
 
     //setInterval(drawCircle, IntervalTime);
     drawCircle();
-    var timesPerSec = @Session["times"];
-    if (timesPerSec == "4")
-        setInterval(drawLine, 250);
-    
+    var timesPerSec = parseInt(@Session["times"]);
+    if (timesPerSec != -1)
+        setInterval(drawLine, 1000 / timesPerSec);
 
-    if (timesPerSec == "4")
+
+    if (timesPerSec != -1)
         drawLine();
 </script>

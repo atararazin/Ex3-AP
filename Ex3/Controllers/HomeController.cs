@@ -21,7 +21,7 @@ namespace Ex3.Controllers
         }
 
         [HttpGet]
-        public ActionResult display(string ip, string port, string timesPerSec = "1")
+        public ActionResult display(string ip, string port, string timesPerSec = "-1")
         {
             IPAddress address;
             if (IPAddress.TryParse(ip, out address))
@@ -50,8 +50,10 @@ namespace Ex3.Controllers
         [HttpPost]
         public string GetLocation()
         {
+            HomeModel.Instance.Connect("127.0.0.1", "5400");
             var location = HomeModel.Instance.GetLocation();
-
+            //Debug.WriteLine(location.Lat);
+            //Debug.WriteLine(location.Lon);
             return ToXml(location);
         }
 
