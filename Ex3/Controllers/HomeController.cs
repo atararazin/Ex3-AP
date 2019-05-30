@@ -14,6 +14,9 @@ namespace Ex3.Controllers
 {
     public class HomeController : Controller
     {
+        private static string simIp;
+        private static string simPort;
+
         // GET: Home
         public ActionResult Index()
         {
@@ -27,6 +30,8 @@ namespace Ex3.Controllers
             if (IPAddress.TryParse(ip, out address))
             {
                 HomeModel.Instance.Connect(ip,port);
+                simIp = ip;
+                simPort = port;
             }
             else
             {
@@ -41,6 +46,9 @@ namespace Ex3.Controllers
         public ActionResult save(string ip, string port, int timesPerSec, int numOfSec, string fileName)
         {
             SaveModel.Instance.Connect(ip,port);
+            simIp = ip;
+            simPort = port;
+
             //deal with viewing the map for a number of seconds
             SaveModel.Instance.SaveToFile(fileName);
 
@@ -50,7 +58,7 @@ namespace Ex3.Controllers
         [HttpPost]
         public string GetLocation()
         {
-            HomeModel.Instance.Connect("127.0.0.1", "5400");
+            HomeModel.Instance.Connect(simIp, simPort);
             var location = HomeModel.Instance.GetLocation();
             //Debug.WriteLine(location.Lat);
             //Debug.WriteLine(location.Lon);

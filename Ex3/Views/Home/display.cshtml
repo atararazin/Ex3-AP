@@ -68,7 +68,7 @@
                 lon = $xml.find( "lon" ).text();
                 lat = $xml.find( "lat" ).text();
 
-                // Draw Line
+                // Set the graphics settings
                 var canvas = document.getElementById('displayCanvas');
                 var context = canvas.getContext('2d');
                 context.lineWidth = 10;
@@ -82,7 +82,6 @@
                 yCoord = convertCord(yCoord, canvas.height, 90);
                 xCoord = prevX; //TO DELETE
                 yCoord = prevY; // TO DELETE
-
 
                 context.beginPath();
                 context.moveTo(prevX, prevY);
