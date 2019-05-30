@@ -80,8 +80,6 @@
                 // normalize the coordinates to the screen size
                 xCoord = convertCord(xCoord, canvas.width, 180);
                 yCoord = convertCord(yCoord, canvas.height, 90);
-                xCoord = prevX; //TO DELETE
-                yCoord = prevY; // TO DELETE
 
 
                 context.beginPath();
@@ -92,9 +90,9 @@
                 //context.lineTo(prevX + diffX, prevY + diffY);
                 //prevX = prevX + diffX;
                 //prevY = prevY + diffY;
-                context.lineTo(xCoord + 10, yCoord + 10); // DELETE + 10
-                prevX = xCoord + 10; // DELETE  + 10
-                prevY = yCoord + 10; // DELETE + 10
+                context.lineTo(xCoord , yCoord ); // DELETE + 10
+                prevX = xCoord;
+                prevY = yCoord;
 
                 context.stroke();
 
