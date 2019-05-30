@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Ex3.Models
 {
-    public class DisplayFromFileModel
+    public class DisplayFromFileModel:IDisplayModel
     {
         private double lon;
         private double lat;
@@ -25,6 +25,11 @@ namespace Ex3.Models
                 }
                 return s_instace;
             }
+        }
+
+        public Location GetLocation()
+        {
+            return new Location(this.lon, this.lat);
         }
 
         public void Display(string fileName, string timesPerSec)
@@ -51,10 +56,7 @@ namespace Ex3.Models
             parseData(str);
         }
 
-        private void displayData(int timesPerSec)
-        {
-
-        }
+        
 
         private void parseData(string data)
         {
@@ -87,11 +89,13 @@ namespace Ex3.Models
                 }
 
             }
-            Debug.WriteLine("values:");
-            Debug.WriteLine(this.lon);
-            Debug.WriteLine(this.lat);
-            Debug.WriteLine(this.rudder);
-            Debug.WriteLine(this.throttle);
         }
+
+
+        private void displayData(int timesPerSec)
+        {
+
+        }
+
     }
 }

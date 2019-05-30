@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Ex3.Models
 {
-    public class HomeModel
+    public class HomeModel:IDisplayModel
     {
         private Location location;
 
