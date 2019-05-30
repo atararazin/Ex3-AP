@@ -63,8 +63,10 @@ namespace Ex3.Models
             foreach (string line in arrOfStrs)
             {
                 string name = line.Substring(0, line.IndexOf(":"));
-                string val = line.Substring(line.IndexOf(" "), line.Count() - 1);
-                int value = Int32.Parse(val);
+                int x = line.IndexOf(" ");
+                int y = line.Count();
+                string val = line.Substring(line.IndexOf(" ") + 1);
+                double value = Double.Parse(val);
                 switch (name)
                 {
                     case "lon":

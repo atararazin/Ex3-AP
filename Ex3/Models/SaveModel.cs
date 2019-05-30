@@ -47,12 +47,23 @@ namespace Ex3.Models
 
         private void writeToFile(FileStream fs)
         {
+            string last = argsForSimulator.Last();
             foreach (string str in argsForSimulator)
             {
                 byte[] writeFileNameb = Encoding.ASCII.GetBytes(str + ":" + " ");
                 fs.Write(writeFileNameb, 0, writeFileNameb.Length);
                 double result = Client.ReadFromServer(str);
-                byte[] writeFileResb = Encoding.ASCII.GetBytes(result.ToString() + "\r\n");
+                byte[] writeFileResb;
+                if (str.Equals(last))
+                {
+                    writeFileResb = Encoding.ASCII.GetBytes(result.ToString());
+
+                }
+                else
+                {
+                    writeFileResb = Encoding.ASCII.GetBytes(result.ToString() + "\r\n");
+
+                }
                 fs.Write(writeFileResb, 0, writeFileResb.Length);
             }
             fs.Close();
