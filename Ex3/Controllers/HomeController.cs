@@ -55,7 +55,6 @@ namespace Ex3.Controllers
             return ToXml(location);
         }
 
-
         // ToXml fuction from the Tirgul
         private string ToXml(Location location)
         {

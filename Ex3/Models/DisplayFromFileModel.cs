@@ -87,7 +87,7 @@ namespace Ex3.Models
                 }
 
             }
-            Debug.WriteLine("values");
+            Debug.WriteLine("values:");
             Debug.WriteLine(this.lon);
             Debug.WriteLine(this.lat);
             Debug.WriteLine(this.rudder);
