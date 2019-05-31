@@ -50,7 +50,7 @@ namespace Ex3.Controllers
             simPort = port;
 
             //deal with viewing the map for a number of seconds
-            SaveModel.Instance.SaveToFile(fileName);
+            SaveModel.Instance.SaveToFile(fileName, timesPerSec, numOfSec);
 
             return View();
         }
