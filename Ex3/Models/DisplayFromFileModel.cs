@@ -14,6 +14,7 @@ namespace Ex3.Models
         private double lat;
         private double rudder;
         private double throttle;
+        private bool atEnd = false;
         private static DisplayFromFileModel s_instace = null;
         public static DisplayFromFileModel Instance
         {
@@ -35,25 +36,39 @@ namespace Ex3.Models
         public void Display(string fileName, string timesPerSec)
         {
             uploadFromFile(fileName);
+            Debug.WriteLine("done reading from file");
             int timesPerSecInt = Int32.Parse(timesPerSec);
             displayData(timesPerSecInt);
         }
 
         private void uploadFromFile(string fileName)
         {
-            Debug.WriteLine("file", fileName);
+            const Int32 bufferSize = 1024;
             var fileStream = new FileStream(fileName + ".txt", FileMode.Open, FileAccess.Read);
-            byte[] buffer = new byte[2048];
+            var streamReader = new StreamReader(fileStream, Encoding.ASCII, true, bufferSize);
+            var lines = File.ReadLines(fileName+".txt");
+            foreach (string line in lines)
+            {
+                readOneLine(streamReader);
+            }
+        }
+
+        private void readOneLine(StreamReader streamReader)
+        {
+            string str = null;
             try
             {
-                fileStream.Read(buffer, 0, buffer.Count());
+                str = streamReader.ReadLine();
             }
             catch
             {
                 Console.WriteLine("unable to read from file");
             }
-            string str = Encoding.ASCII.GetString(buffer);
-            parseData(str);
+            //string str = Encoding.ASCII.GetString(buffer);
+            if (!str.Equals("end"))
+            {
+                parseData(str);
+            }
         }
 
         
@@ -61,34 +76,11 @@ namespace Ex3.Models
         private void parseData(string data)
         {
             Debug.WriteLine("parsing data");
-            string[] arrOfStrs = data.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string line in arrOfStrs)
-            {
-                string name = line.Substring(0, line.IndexOf(":"));
-                int x = line.IndexOf(" ");
-                int y = line.Count();
-                string val = line.Substring(line.IndexOf(" ") + 1);
-                double value = Double.Parse(val);
-                switch (name)
-                {
-                    case "lon":
-                        this.lon = value;
-                        break;
-                    case "lat":
-                        this.lat = value;
-                        break;
-                    case "rudder":
-                        this.rudder = value;
-                        break;
-                    case "throttle":
-                        this.throttle = value;
-                        break;
-                    default:
-                        Console.WriteLine("not a variable");
-                        break;
-                }
-
-            }
+            string[] split = data.Split('\t');
+            this.lon = Double.Parse(split[0]);
+            this.lat = Double.Parse(split[1]);
+            this.throttle = Double.Parse(split[2]);
+            this.rudder = Double.Parse(split[3]);  
         }
 
 

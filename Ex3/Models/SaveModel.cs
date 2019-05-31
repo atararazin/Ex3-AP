@@ -11,7 +11,7 @@ namespace Ex3.Models
 {
     public class SaveModel
     {
-        private List<string> argsForSimulator = new List<string>(){"lon", "lat", "throttle", "rudder"};
+        private readonly List<string> argsForSimulator = new List<string>(){"lon", "lat", "throttle", "rudder"};
         private readonly string last = "rudder";
         private static SaveModel s_instace = null;
         public static SaveModel Instance
@@ -62,6 +62,8 @@ namespace Ex3.Models
                         Task.Delay(times - ms);
                 }
             }
+            byte[] end = Encoding.ASCII.GetBytes("end");
+            fs.Write(end, 0, end.Length);
             fs.Close();
         }
 

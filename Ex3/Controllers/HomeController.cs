@@ -60,8 +60,6 @@ namespace Ex3.Controllers
         {
             HomeModel.Instance.Connect(simIp, simPort);
             var location = HomeModel.Instance.GetLocation();
-            //Debug.WriteLine(location.Lat);
-            //Debug.WriteLine(location.Lon);
             return ToXml(location);
         }
 
