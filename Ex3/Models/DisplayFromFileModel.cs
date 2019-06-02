@@ -71,9 +71,10 @@ namespace Ex3.Models
 
         private void readOneLine()
         {
-            if (!upTo.Equals("end"))
+            parseData(upTo);
+            if(upTo.Equals("end"))
             {
-                parseData(upTo);
+                return;
             }
             string str = null;
             try
@@ -84,15 +85,16 @@ namespace Ex3.Models
             {
                 Console.WriteLine("unable to read from file");
             }
-            if (!str.Equals("end"))
-            {
                 upTo = str;
-            }
         }
         
         private void parseData(string data)
         {
-            Debug.WriteLine("parsing data");
+            if (data.Equals("end"))
+            {
+                this.location = null;
+                return;
+            }
             string[] split = data.Split('\t');
             this.lon = Double.Parse(split[0]);
             this.lat = Double.Parse(split[1]);

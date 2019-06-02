@@ -30,15 +30,16 @@ namespace Ex3.Controllers
             {
                 HomeModel.Instance.Connect(ip,port);
                 currModel = HomeModel.Instance;
+                Session["times"] = timesPerSec;
             }
             else
             {
                 DisplayFromFileModel.Instance.OpenFile(ip);
                 currModel = DisplayFromFileModel.Instance;
-                timesPerSec = port;
+                Session["times"] = port;
             }
 
-            Session["times"] = timesPerSec;
+            //Session["times"] = timesPerSec;
             return View();
         }
 
