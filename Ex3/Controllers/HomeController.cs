@@ -49,7 +49,9 @@ namespace Ex3.Controllers
             SaveModel.Instance.Connect(ip,port);
             //deal with viewing the map for a number of seconds
             SaveModel.Instance.SaveToFile(fileName, timesPerSec, numOfSec);
-            return View();
+            currModel = SaveModel.Instance;
+            Session["times"] = timesPerSec;
+            return View("display");
         }
 
         [HttpPost]
