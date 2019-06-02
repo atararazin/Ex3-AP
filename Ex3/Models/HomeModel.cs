@@ -6,10 +6,9 @@ using System.Web;
 
 namespace Ex3.Models
 {
-    public class HomeModel:IDisplayModel
+    public class HomeModel:IModel
     {
         private Location location;
-
         private static HomeModel s_instace = null;
         public static HomeModel Instance
         {
@@ -26,6 +25,13 @@ namespace Ex3.Models
         public void Connect(string ip, string port)
         {
             Client.Connect(ip, port);
+            //double lat = Client.ReadFromServer("lat");
+            //double lon = Client.ReadFromServer("lon");
+            //this.location = new Location(lon, lat);
+        }
+
+        public void ReadData()
+        {
             double lat = Client.ReadFromServer("lat");
             double lon = Client.ReadFromServer("lon");
             this.location = new Location(lon, lat);
@@ -34,11 +40,6 @@ namespace Ex3.Models
         public Location GetLocation()
         {
             return this.location;
-        }
-
-        public void GetData(string fileName, string numOfSec)
-        {
-            
         }
     }
 }

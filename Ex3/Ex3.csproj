@@ -114,7 +114,8 @@
     <Compile Include="Models\DisplayFromFileModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\Client.cs" />
-    <Compile Include="Models\IDisplayModel.cs" />
+    <Compile Include="Models\DisplayModelBase.cs" />
+    <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\SaveModel.cs" />
     <Compile Include="Models\SimulatorRequests.cs" />

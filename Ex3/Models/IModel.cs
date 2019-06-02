@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ex3.Models
 {
-    interface IDisplayModel
+    interface IModel
     {
         Location GetLocation();
-        
+        void ReadData();
     }
 }

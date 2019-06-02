@@ -14,9 +14,8 @@ namespace Ex3.Controllers
 {
     public class HomeController : Controller
     {
-        private static string simIp;
-        private static string simPort;
-
+        private static IModel currModel;
+        
         // GET: Home
         public ActionResult Index()
         {
@@ -30,12 +29,13 @@ namespace Ex3.Controllers
             if (IPAddress.TryParse(ip, out address))
             {
                 HomeModel.Instance.Connect(ip,port);
-                simIp = ip;
-                simPort = port;
+                currModel = HomeModel.Instance;
             }
             else
             {
-                DisplayFromFileModel.Instance.Display(ip, port);
+                DisplayFromFileModel.Instance.OpenFile(ip);
+                currModel = DisplayFromFileModel.Instance;
+                timesPerSec = port;
             }
 
             Session["times"] = timesPerSec;
@@ -46,20 +46,16 @@ namespace Ex3.Controllers
         public ActionResult save(string ip, string port, int timesPerSec, int numOfSec, string fileName)
         {
             SaveModel.Instance.Connect(ip,port);
-            simIp = ip;
-            simPort = port;
-
             //deal with viewing the map for a number of seconds
             SaveModel.Instance.SaveToFile(fileName, timesPerSec, numOfSec);
-
             return View();
         }
 
         [HttpPost]
         public string GetLocation()
         {
-            HomeModel.Instance.Connect(simIp, simPort);
-            var location = HomeModel.Instance.GetLocation();
+            currModel.ReadData();
+            var location = currModel.GetLocation();
             return ToXml(location);
         }
 

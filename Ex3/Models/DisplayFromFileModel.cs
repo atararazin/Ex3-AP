@@ -8,13 +8,16 @@ using System.Web;
 
 namespace Ex3.Models
 {
-    public class DisplayFromFileModel:IDisplayModel
+    public class DisplayFromFileModel:IModel
     {
         private double lon;
         private double lat;
         private double rudder;
         private double throttle;
-        private bool atEnd = false;
+        private Location location;
+        private string upTo;
+        private StreamReader streamReader;
+
         private static DisplayFromFileModel s_instace = null;
         public static DisplayFromFileModel Instance
         {
@@ -30,49 +33,63 @@ namespace Ex3.Models
 
         public Location GetLocation()
         {
-            return new Location(this.lon, this.lat);
+            return this.location;
+        }
+
+        public void OpenFile(string fileName)
+        {
+            Debug.WriteLine("opening file");
+            const Int32 bufferSize = 1024;
+            var fileStream = new FileStream(fileName + ".txt", FileMode.Open, FileAccess.Read);
+            this.streamReader = new StreamReader(fileStream, Encoding.ASCII, true, bufferSize);
+            this.upTo = streamReader.ReadLine();
+        }
+
+        public void ReadData()
+        {
+            readOneLine();
         }
 
         public void Display(string fileName, string timesPerSec)
         {
             uploadFromFile(fileName);
-            Debug.WriteLine("done reading from file");
             int timesPerSecInt = Int32.Parse(timesPerSec);
-            displayData(timesPerSecInt);
         }
 
         private void uploadFromFile(string fileName)
         {
             const Int32 bufferSize = 1024;
             var fileStream = new FileStream(fileName + ".txt", FileMode.Open, FileAccess.Read);
-            var streamReader = new StreamReader(fileStream, Encoding.ASCII, true, bufferSize);
-            var lines = File.ReadLines(fileName+".txt");
-            foreach (string line in lines)
-            {
-                readOneLine(streamReader);
-            }
+            this.streamReader = new StreamReader(fileStream, Encoding.ASCII, true, bufferSize);
+            //var lines = File.ReadLines(fileName+".txt");
+            this.upTo = streamReader.ReadLine();
+            //foreach (string line in lines)
+            //{
+            //    readOneLine(streamReader);
+            //}
         }
 
-        private void readOneLine(StreamReader streamReader)
+        private void readOneLine()
         {
+            if (!upTo.Equals("end"))
+            {
+                parseData(upTo);
+            }
             string str = null;
             try
             {
-                str = streamReader.ReadLine();
+                str = this.streamReader.ReadLine();
             }
             catch
             {
                 Console.WriteLine("unable to read from file");
             }
-            //string str = Encoding.ASCII.GetString(buffer);
             if (!str.Equals("end"))
             {
-                parseData(str);
+                upTo = str;
             }
         }
-
         
-
         private void parseData(string data)
         {
             Debug.WriteLine("parsing data");
@@ -80,14 +97,8 @@ namespace Ex3.Models
             this.lon = Double.Parse(split[0]);
             this.lat = Double.Parse(split[1]);
             this.throttle = Double.Parse(split[2]);
-            this.rudder = Double.Parse(split[3]);  
+            this.rudder = Double.Parse(split[3]);
+            this.location = new Location(lon, lat);
         }
-
-
-        private void displayData(int timesPerSec)
-        {
-
-        }
-
     }
 }
