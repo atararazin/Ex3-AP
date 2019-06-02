@@ -58,7 +58,7 @@ namespace Ex3.Models
         private FileStream createFile(string fileName)
         {
             string fileWEtx = fileName + ".txt";
-            return File.Create(fileWEtx);
+            return File.Create(@"c:\temp\ "+ fileWEtx);
         }
 
         private void writeToFile(FileStream fs, int timesPerSec, int numOfSecs)
@@ -79,6 +79,7 @@ namespace Ex3.Models
             byte[] end = Encoding.ASCII.GetBytes("end");
             fs.Write(end, 0, end.Length);
             fs.Close();
+            fs = null;
         }
 
         private void writeOnceToFile(FileStream fs)
@@ -97,7 +98,8 @@ namespace Ex3.Models
                 {
                     writeFileResb = Encoding.ASCII.GetBytes(result.ToString() + "\r\n");
                 }
-                fs.Write(writeFileResb, 0, writeFileResb.Length);
+                if (fs != null)
+                    fs.Write(writeFileResb, 0, writeFileResb.Length);
             }
         }
 
