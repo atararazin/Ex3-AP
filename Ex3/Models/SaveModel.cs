@@ -38,8 +38,10 @@ namespace Ex3.Models
 
         public void ReadData()
         {
-            //do this
             writeOnceToFile(fs);
+            //double lat = Client.ReadFromServer("lat");
+            //double lon = Client.ReadFromServer("lon");
+            //this.location = new Location(lon, lat);
         }
 
         public void Connect(string ip, string port)
@@ -55,10 +57,17 @@ namespace Ex3.Models
             Debug.WriteLine("saved to file");
         }
 
+        public void openFile(string fileName)
+        {
+            fs = createFile(fileName);
+            Debug.WriteLine("Opened file");
+        }
+
+
         private FileStream createFile(string fileName)
         {
             string fileWEtx = fileName + ".txt";
-            return File.Create(@"c:\temp\ "+ fileWEtx);
+            return File.Create(Path.GetTempPath() + fileWEtx);
         }
 
         private void writeToFile(FileStream fs, int timesPerSec, int numOfSecs)
@@ -82,25 +91,36 @@ namespace Ex3.Models
             fs = null;
         }
 
+        public void CloseFile()
+        {
+            fs.Close();
+        }
+
         private void writeOnceToFile(FileStream fs)
-        {   
+        {
+            string oneRow = "";
             foreach (string str in argsForSimulator)
             {
                 byte[] writeFileNameb = Encoding.ASCII.GetBytes(str);
                 double result = Client.ReadFromServer(str);
                 updateLocation(str, result);
-                byte[] writeFileResb;
                 if (!str.Equals(this.last))
                 {
-                    writeFileResb = Encoding.ASCII.GetBytes(result.ToString() + "\t");
+                    oneRow += result.ToString() + "\t";
                 }
                 else
                 {
-                    writeFileResb = Encoding.ASCII.GetBytes(result.ToString() + "\r\n");
+                    oneRow += result.ToString() + "\r\n";
                 }
-                if (fs != null)
-                    fs.Write(writeFileResb, 0, writeFileResb.Length);
             }
+            if (fs != null)
+            {
+                byte[] oneRowBytes = Encoding.ASCII.GetBytes(oneRow);
+                fs.Write(oneRowBytes, 0, oneRowBytes.Length);
+            }
+                
+
+
         }
 
         private void updateLocation(string type, double data)
@@ -117,6 +137,8 @@ namespace Ex3.Models
                     Console.WriteLine("invalid");
                     break;
             }
+
+            this.location = new Location(lon, lat);
         }
     }
 }
