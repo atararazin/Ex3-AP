@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "display";
 }
-<h2>display</h2>
 <div>
     <canvas id="displayCanvas"></canvas>
 </div>
@@ -23,7 +22,7 @@
     // Initial x, y
     var prevX = 0;
     var prevY = 0;
-    
+
     // Drawing circle
     drawCircle = (function () {
         $.post( "@Url.Action("GetLocation")").done(function (xml) {
@@ -36,8 +35,11 @@
                 var canvas = document.getElementById('displayCanvas');
                 canvas.width = dimension[0];
                 canvas.height = dimension[1];
+            
 
                 var context = canvas.getContext('2d');
+            
+
                 var xCoord = parseFloat(lon);
                 var yCoord = parseFloat(lat);
 
@@ -55,7 +57,7 @@
                 context.fill();
 
                 //draw the inner circle
-                context.fillStyle = "#ff2626"; //red color
+                context.fillStyle = "#ff2626"; //red
                 pointSize = 3;
                 context.beginPath(); //Start path
                 context.arc(xCoord, yCoord, pointSize, 0, Math.PI * 2, true); // Draw a point using the arc function of the canvas with a point structure.
@@ -110,11 +112,8 @@
                 context.moveTo(prevX, prevY);
                 diffX = (xCoord - prevX) * 10;
                 diffY = (yCoord - prevY) * 10;
-
-                //context.lineTo(prevX + diffX, prevY + diffY);
-                //prevX = prevX + diffX;
-                //prevY = prevY + diffY;
-                context.lineTo(xCoord , yCoord ); // DELETE + 10
+            
+                context.lineTo(xCoord , yCoord );
                 prevX = xCoord;
                 prevY = yCoord;
 
@@ -124,7 +123,6 @@
     });
 
 
-    //setInterval(drawCircle, IntervalTime);
     drawCircle();
     timesPerSec = parseInt(@Session["times"]);
     var shouldSave = @Session["shouldSave"];
@@ -133,19 +131,12 @@
     if (shouldSave == 0) {
         if (timesPerSec != -1)
            interval = setInterval(drawLine, 1000 / timesPerSec);
-
-
-        if (timesPerSec != -1)
-            console.log("asfd");
-            //drawLine();
     }
 
     // Display AND Save to file
     else
     {
-        numOfSec = parseInt(@Session["numOfSecs"]);
         interval = setInterval(drawLine, 1000 / timesPerSec);
-        //drawLine();
+        numOfSec = parseInt(@Session["numOfSecs"]);
     }
-
 </script>

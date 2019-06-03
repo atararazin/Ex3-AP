@@ -39,9 +39,6 @@ namespace Ex3.Models
         public void ReadData()
         {
             writeOnceToFile(fs);
-            //double lat = Client.ReadFromServer("lat");
-            //double lon = Client.ReadFromServer("lon");
-            //this.location = new Location(lon, lat);
         }
 
         public void Connect(string ip, string port)

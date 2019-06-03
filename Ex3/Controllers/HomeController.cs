@@ -43,7 +43,6 @@ namespace Ex3.Controllers
                 Session["shouldSave"] = 0;
             }
 
-            //Session["times"] = timesPerSec;
             return View();
         }
 
@@ -54,8 +53,6 @@ namespace Ex3.Controllers
 
             SaveModel.Instance.Connect(ip, port);
             SaveModel.Instance.openFile(fileName);
-            //deal with viewing the map for a number of seconds
-            //SaveModel.Instance.SaveToFile(fileName, timesPerSec, numOfSec);
             currModel = SaveModel.Instance;
             Session["times"] = timesPerSec;
             Session["numOfSecs"] = numOfSec;
