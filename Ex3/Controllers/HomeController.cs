@@ -16,7 +16,7 @@ namespace Ex3.Controllers
     {
         private static IModel currModel;
         private bool shouldWrite;
-        
+
         // GET: Home
         public ActionResult Index()
         {
@@ -30,7 +30,7 @@ namespace Ex3.Controllers
             IPAddress address;
             if (IPAddress.TryParse(ip, out address))
             {
-                HomeModel.Instance.Connect(ip,port);
+                HomeModel.Instance.Connect(ip, port);
                 currModel = HomeModel.Instance;
                 Session["times"] = timesPerSec;
                 Session["shouldSave"] = 0;
@@ -52,7 +52,7 @@ namespace Ex3.Controllers
         {
             shouldWrite = true;
 
-            SaveModel.Instance.Connect(ip,port);
+            SaveModel.Instance.Connect(ip, port);
             SaveModel.Instance.openFile(fileName);
             //deal with viewing the map for a number of seconds
             //SaveModel.Instance.SaveToFile(fileName, timesPerSec, numOfSec);
@@ -68,7 +68,9 @@ namespace Ex3.Controllers
         {
             currModel.ReadData();
             var location = currModel.GetLocation();
-            return ToXml(location);
+            if (location != null)
+                return ToXml(location);
+            return "-1";
         }
 
         [HttpPost]
