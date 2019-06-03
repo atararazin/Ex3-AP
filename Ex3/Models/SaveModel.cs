@@ -94,6 +94,7 @@ namespace Ex3.Models
         public void CloseFile()
         {
             fs.Close();
+            fs = null;
         }
 
         private void writeOnceToFile(FileStream fs)

@@ -76,7 +76,7 @@
 
             // Should stop show in the map
             else {
-                
+                $.post("@Url.Action("FinishTask")");
                 clearInterval(interval);
             }
         }
