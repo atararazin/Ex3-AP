@@ -68,7 +68,9 @@ namespace Ex3.Controllers
         {
             currModel.ReadData();
             var location = currModel.GetLocation();
-            return ToXml(location);
+            if (location != null)
+                return ToXml(location);
+            return "-1";
         }
 
         [HttpPost]
