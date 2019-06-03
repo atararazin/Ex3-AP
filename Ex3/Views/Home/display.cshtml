@@ -9,6 +9,11 @@
 
 <script>
 
+    var numOfSec = 0;
+    var counter = 0;
+    var timesPerSec;
+    var interval;
+
     // Normalization function
     function convertCord(val, screenSize, cordRange)
     {
@@ -18,7 +23,7 @@
     // Initial x, y
     var prevX = 0;
     var prevY = 0;
-
+    
     // Drawing circle
     drawCircle = (function () {
         $.post( "@Url.Action("GetLocation")").done(function (xml) {
@@ -62,8 +67,27 @@
 
     // Drawing line
     drawLine = (function () {
+
+        if (numOfSec != 0) {
+
+            if (counter <= (timesPerSec * numOfSec)) {
+                counter = counter + 1;
+            }
+
+            // Should stop show in the map
+            else {
+                $.post("@Url.Action("FinishTask")");
+                clearInterval(interval);
+            }
+        }
+
         $.post( "@Url.Action("GetLocation")").done(function (xml) {
-                var xmlDoc = $.parseXML( xml ),
+                if (xml == "-1") {
+                    clearInterval(interval);
+                    window.alert("Bye!");
+                    return;
+                }
+                var xmlDoc = $.parseXML(xml),
                 $xml = $( xmlDoc ),
                 lon = $xml.find( "lon" ).text();
                 lat = $xml.find( "lat" ).text();
@@ -102,11 +126,26 @@
 
     //setInterval(drawCircle, IntervalTime);
     drawCircle();
-    var timesPerSec = parseInt(@Session["times"]);
-    if (timesPerSec != -1)
-        setInterval(drawLine, 1000 / timesPerSec);
+    timesPerSec = parseInt(@Session["times"]);
+    var shouldSave = @Session["shouldSave"];
+
+    // Display without saving to file
+    if (shouldSave == 0) {
+        if (timesPerSec != -1)
+           interval = setInterval(drawLine, 1000 / timesPerSec);
 
 
-    if (timesPerSec != -1)
-        drawLine();
+        if (timesPerSec != -1)
+            console.log("asfd");
+            //drawLine();
+    }
+
+    // Display AND Save to file
+    else
+    {
+        numOfSec = parseInt(@Session["numOfSecs"]);
+        interval = setInterval(drawLine, 1000 / timesPerSec);
+        //drawLine();
+    }
+
 </script>

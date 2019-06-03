@@ -40,7 +40,7 @@ namespace Ex3.Models
         {
             Debug.WriteLine("opening file");
             const Int32 bufferSize = 1024;
-            var fileStream = new FileStream(fileName + ".txt", FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream(Path.GetTempPath() + fileName + ".txt", FileMode.Open, FileAccess.Read);
             this.streamReader = new StreamReader(fileStream, Encoding.ASCII, true, bufferSize);
             this.upTo = streamReader.ReadLine();
         }

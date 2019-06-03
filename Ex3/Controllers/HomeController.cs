@@ -15,6 +15,7 @@ namespace Ex3.Controllers
     public class HomeController : Controller
     {
         private static IModel currModel;
+        private bool shouldWrite;
         
         // GET: Home
         public ActionResult Index()
@@ -25,18 +26,21 @@ namespace Ex3.Controllers
         [HttpGet]
         public ActionResult display(string ip, string port, string timesPerSec = "-1")
         {
+            shouldWrite = false;
             IPAddress address;
             if (IPAddress.TryParse(ip, out address))
             {
                 HomeModel.Instance.Connect(ip,port);
                 currModel = HomeModel.Instance;
                 Session["times"] = timesPerSec;
+                Session["shouldSave"] = 0;
             }
             else
             {
                 DisplayFromFileModel.Instance.OpenFile(ip);
                 currModel = DisplayFromFileModel.Instance;
                 Session["times"] = port;
+                Session["shouldSave"] = 0;
             }
 
             //Session["times"] = timesPerSec;
@@ -44,13 +48,18 @@ namespace Ex3.Controllers
         }
 
         [HttpGet]
-        public ActionResult save(string ip, string port, int timesPerSec, int numOfSec, string fileName)
+        public ActionResult save(string ip, string port, int timesPerSec, string numOfSec, string fileName)
         {
+            shouldWrite = true;
+
             SaveModel.Instance.Connect(ip,port);
+            SaveModel.Instance.openFile(fileName);
             //deal with viewing the map for a number of seconds
-            SaveModel.Instance.SaveToFile(fileName, timesPerSec, numOfSec);
+            //SaveModel.Instance.SaveToFile(fileName, timesPerSec, numOfSec);
             currModel = SaveModel.Instance;
             Session["times"] = timesPerSec;
+            Session["numOfSecs"] = numOfSec;
+            Session["shouldSave"] = 1;
             return View("display");
         }
 
@@ -60,6 +69,12 @@ namespace Ex3.Controllers
             currModel.ReadData();
             var location = currModel.GetLocation();
             return ToXml(location);
+        }
+
+        [HttpPost]
+        public void FinishTask()
+        {
+            SaveModel.Instance.CloseFile();
         }
 
         // ToXml fuction from the Tirgul
