@@ -72,7 +72,7 @@
 
         if (numOfSec != 0) {
 
-            if (counter <= (timesPerSec * numOfSec)) {
+            if (counter < (timesPerSec * numOfSec)) {
                 counter = counter + 1;
             }
 
@@ -80,6 +80,7 @@
             else {
                 $.post("@Url.Action("FinishTask")");
                 clearInterval(interval);
+                return;
             }
         }
 
@@ -93,7 +94,6 @@
                 $xml = $( xmlDoc ),
                 lon = $xml.find( "lon" ).text();
                 lat = $xml.find( "lat" ).text();
-
                 // Draw Line
                 var canvas = document.getElementById('displayCanvas');
                 var context = canvas.getContext('2d');
