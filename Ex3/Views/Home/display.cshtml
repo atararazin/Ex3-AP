@@ -50,7 +50,7 @@
                 prevY = yCoord;
 
                 //draw the outer circle
-                var pointSize = 4;
+                var pointSize = 8;
                 context.fillStyle = "000000"//black
                 context.beginPath(); //Start path
                 context.arc(xCoord, yCoord, pointSize, 0, Math.PI * 2, true); // Draw a point using the arc function of the canvas with a point structure.
@@ -58,7 +58,7 @@
 
                 //draw the inner circle
                 context.fillStyle = "#ff2626"; //red
-                pointSize = 3;
+                pointSize = 7;
                 context.beginPath(); //Start path
                 context.arc(xCoord, yCoord, pointSize, 0, Math.PI * 2, true); // Draw a point using the arc function of the canvas with a point structure.
                 context.fill();
