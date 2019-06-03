@@ -93,6 +93,8 @@ namespace Ex3.Models
 
         public void CloseFile()
         {
+            byte[] oneRowBytes = Encoding.ASCII.GetBytes("end");
+            fs.Write(oneRowBytes, 0, oneRowBytes.Length);
             fs.Close();
             fs = null;
         }

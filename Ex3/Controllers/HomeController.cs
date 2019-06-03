@@ -40,6 +40,7 @@ namespace Ex3.Controllers
                 DisplayFromFileModel.Instance.OpenFile(ip);
                 currModel = DisplayFromFileModel.Instance;
                 Session["times"] = port;
+                Session["shouldSave"] = 0;
             }
 
             //Session["times"] = timesPerSec;

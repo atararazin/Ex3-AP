@@ -82,7 +82,12 @@
         }
 
         $.post( "@Url.Action("GetLocation")").done(function (xml) {
-                var xmlDoc = $.parseXML( xml ),
+                if (xml == "-1") {
+                    clearInterval(interval);
+                    window.alert("Bye!");
+                    return;
+                }
+                var xmlDoc = $.parseXML(xml),
                 $xml = $( xmlDoc ),
                 lon = $xml.find( "lon" ).text();
                 lat = $xml.find( "lat" ).text();
