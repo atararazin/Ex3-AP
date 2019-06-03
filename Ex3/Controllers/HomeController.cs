@@ -65,6 +65,7 @@ namespace Ex3.Controllers
         {
             currModel.ReadData();
             var location = currModel.GetLocation();
+            //Debug.WriteLine(location.Lon);
             if (location != null)
                 return ToXml(location);
             return "-1";
