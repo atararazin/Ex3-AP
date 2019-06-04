@@ -17,6 +17,7 @@ namespace Ex3.Models
         private Location location;
         private string upTo;
         private StreamReader streamReader;
+        private FileStream fs;
 
         private static DisplayFromFileModel s_instace = null;
         public static DisplayFromFileModel Instance
@@ -40,8 +41,8 @@ namespace Ex3.Models
         {
             Debug.WriteLine("opening file");
             const Int32 bufferSize = 1024;
-            var fileStream = new FileStream(Path.GetTempPath() + fileName + ".txt", FileMode.Open, FileAccess.Read);
-            this.streamReader = new StreamReader(fileStream, Encoding.ASCII, true, bufferSize);
+            this.fs = new FileStream(Path.GetTempPath() + fileName + ".txt", FileMode.Open, FileAccess.Read);
+            this.streamReader = new StreamReader(fs, Encoding.ASCII, true, bufferSize);
             this.upTo = streamReader.ReadLine();
         }
 
@@ -50,30 +51,13 @@ namespace Ex3.Models
             readOneLine();
         }
 
-        public void Display(string fileName, string timesPerSec)
-        {
-            uploadFromFile(fileName);
-            int timesPerSecInt = Int32.Parse(timesPerSec);
-        }
-
-        private void uploadFromFile(string fileName)
-        {
-            const Int32 bufferSize = 1024;
-            var fileStream = new FileStream(fileName + ".txt", FileMode.Open, FileAccess.Read);
-            this.streamReader = new StreamReader(fileStream, Encoding.ASCII, true, bufferSize);
-            //var lines = File.ReadLines(fileName+".txt");
-            this.upTo = streamReader.ReadLine();
-            //foreach (string line in lines)
-            //{
-            //    readOneLine(streamReader);
-            //}
-        }
 
         private void readOneLine()
         {
             parseData(upTo);
             if(upTo.Equals("end"))
             {
+                this.fs.Close();
                 return;
             }
             string str = null;
