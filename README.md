@@ -10,3 +10,7 @@ https://github.com/atararazin/Flight-Simulator-Desktop-App/blob/master/README.md
 and shows exactly what a real airplane would show. However, that would require you to run this program for hours in order for you to see 
 any progress. Therefore, we created a python server that flies at quite the speed and travels all over the world within seconds. I uploaded
 it so you can use it, it's called
+
+
+Bon Voyage!
+![alt text](https://github.com/atararazin/Flight-Map-Web-App/blob/master/flight%20map.jpg)
