@@ -6,7 +6,7 @@ You know the map that they show on flights of the distance the plane has gone? A
 flights just watching the distance the plane has gone.This project was the third assignment in my Advanced Programming II course. 
 
 ## How to run
-Theoretically, this program runs with the Flight Gear (I talk about it extensively here:
+Theoretically, this program runs with the Flight Gear (I talk about Flight Gear extensively here:
 https://github.com/atararazin/Flight-Simulator-Desktop-App/blob/master/README.md)
 and shows exactly what a real airplane would show. However, that would require you to run this program for hours in order for you to see 
 any progress. Therefore, we created a python server that flies at quite the speed and travels all over the world within seconds. I uploaded
