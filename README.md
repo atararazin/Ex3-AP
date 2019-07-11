@@ -2,8 +2,7 @@
 Shows the path an airplane has gone on a map of the world
 
 ## About
-You know the map that they show on flights of the distance the plane has gone? As a huge traveling fan, I have spent nice portion of 12 hour
-flights just watching the distance the plane has gone.This project was the third assignment in my Advanced Programming II course. 
+You know the map that they show on flights of the distance the plane has gone? As a huge traveling fan, I have spent nice portion of 12 hour flights simply watching the the plane inch forward on the screen. This project does exactly that (and more!) I developed this as the  third assignment in my Advanced Programming II course. 
 
 ## How to run
 Theoretically, this program runs with the Flight Gear (I talk about Flight Gear extensively here:
