@@ -10,7 +10,7 @@ Theoretically, this program runs with the Flight Gear (I talk about Flight Gear 
 https://github.com/atararazin/Flight-Simulator-Desktop-App/blob/master/README.md)
 and shows exactly what a real airplane would show. However, that would require you to run this program for hours in order for you to see 
 any progress. Therefore, we created a python server that flies at quite the speed and travels all over the world within seconds. I uploaded
-it in zip form, because it has a few files that the server uses, so just download the zip and run it. The zip is called server.zip.
+it in zip form, because it has a few files that the server uses, so just download the zip and run it. The zip is called server.zip. The server runs on python 3, so make sure you have it on your computer!
 
 ### The client side - our program
 After the server is already running, now we can actually run the program. The program can take the 4 following URIs:
